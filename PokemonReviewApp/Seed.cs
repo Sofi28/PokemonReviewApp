@@ -39,12 +39,12 @@ namespace PokemonReviewApp
                         },
                         Owner = new Owner()
                         {
-                            FirstName = "Jack",
-                            LastName = "London",
-                            Gym = "Brocks Gym",
+                            FirstName = "Ash",
+                            LastName = "Ketchup",
+                            Gym = "",
                             Country = new Country()
                             {
-                                Name = "Kanto"
+                                Name = "Pallet Town"
                             }
                         }
                     },
@@ -70,12 +70,12 @@ namespace PokemonReviewApp
                         },
                         Owner = new Owner()
                         {
-                            FirstName = "Harry",
-                            LastName = "Potter",
-                            Gym = "Mistys Gym",
+                            FirstName = "Blaine",
+                            LastName = "Anderson",
+                            Gym = "Volcano Badge Gym",
                             Country = new Country()
                             {
-                                Name = "Saffron City"
+                                Name = "Cinnabar Island"
                             }
                         }
                     },
@@ -101,12 +101,12 @@ namespace PokemonReviewApp
                         },
                         Owner = new Owner()
                         {
-                            FirstName = "Ash",
-                            LastName = "Ketchum",
-                            Gym = "Ashs Gym",
+                            FirstName = "Erika",
+                            LastName = "<Unknown>",
+                            Gym = "Rainbow Badge Gym",
                             Country = new Country()
                             {
-                                Name = "Millet Town"
+                                Name = "Celadon City"
                             }
                         }
                     }
