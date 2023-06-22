@@ -10,5 +10,7 @@
         bool ReviewExists(int reviewId);
         bool CreateReview(Review review);
         bool Save();
+        bool updateReview(Review review);
+
     }
 }

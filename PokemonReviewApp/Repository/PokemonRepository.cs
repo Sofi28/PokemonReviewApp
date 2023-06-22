@@ -76,5 +76,11 @@
 
             return this.Save();
         }
+
+        public bool updatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        {
+            _context.Update(pokemon);
+            return this.Save();
+        }
     }
 }

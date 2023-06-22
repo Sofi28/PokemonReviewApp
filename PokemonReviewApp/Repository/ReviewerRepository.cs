@@ -46,5 +46,11 @@
             var save = _context.SaveChanges();
             return save > 0 ? true : false;
         }
+
+        public bool updateReviewer(Reviewer reviewer)
+        {
+            _context.Update(reviewer);
+            return this.Save();
+        }
     }
 }

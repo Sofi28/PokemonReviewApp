@@ -12,12 +12,15 @@
     public class PokemonController : Controller
     {
         private readonly IPokemonRepository _pokemonRepository;
+        private readonly IOwnerRepository _ownerRepository;
+        private readonly IReviewerRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
+        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper, IReviewerRepository reviewRepository)
         {
             _pokemonRepository = pokemonRepository;
             _mapper = mapper;
+            _reviewRepository = reviewRepository;
         }
 
         [HttpGet]
@@ -104,6 +107,43 @@
             }
 
             return Ok("Succesfully created");
+        }
+
+        [HttpPut("{pokemonId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePokemon(int pokemonId, [FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto updatedPokemon)
+        {
+            if (updatedPokemon == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (pokemonId != updatedPokemon.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_pokemonRepository.PokemonExists(pokemonId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var pokemonMap = _mapper.Map<Pokemon>(updatedPokemon);
+
+            if (!_pokemonRepository.updatePokemon(ownerId, catId, pokemonMap))
+            {
+                ModelState.AddModelError("", "Something went wrong");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
         }
     }
 }

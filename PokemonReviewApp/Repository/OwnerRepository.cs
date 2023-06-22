@@ -51,5 +51,11 @@
             var save = _context.SaveChanges();
             return save > 0 ? true : false;
         }
+
+        public bool updateOwner(Owner owner)
+        {
+            _context.Update(owner);
+            return this.Save();
+        }
     }
 }
