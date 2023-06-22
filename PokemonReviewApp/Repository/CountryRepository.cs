@@ -20,6 +20,12 @@
             return _context.Countries.Any(c=> c.Id == id);
         }
 
+        public bool CreateCountry(Country country)
+        {
+            _context.Add(country);
+            return this.Save();
+        }
+
         public ICollection<Country> GetCountries()
         {
             return _context.Countries.OrderBy(c=> c.Name).ToList();
@@ -38,6 +44,12 @@
         public ICollection<Owner> GetOwnersFromACountry(int countryId)
         {
             return _context.Owners.Where(o => o.Country.Id == countryId).ToList();
+        }
+
+        public bool Save()
+        {
+            var save = _context.SaveChanges();
+            return save > 0 ? true : false;
         }
     }
 }

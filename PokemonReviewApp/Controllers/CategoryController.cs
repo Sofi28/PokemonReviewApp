@@ -73,5 +73,42 @@
 
             return Ok(pokemon);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
+        {
+            if(categoryCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var category = _categoryRepository.GetCategories()
+                                                                .Where(c=> c.Name.Trim().ToUpper() == categoryCreate.Name.Trim().ToUpper())
+                                                                .FirstOrDefault();
+
+            if(category != null)
+            {
+                ModelState.AddModelError("", "Category already exists");
+                return StatusCode(422, ModelState);
+                    
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var categorytMap = _mapper.Map<Category>(categoryCreate);
+
+            if(!_categoryRepository.CreateCategory(categorytMap))
+            {
+                ModelState.AddModelError("","Something went wrong");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Succesfully created");
+        }
     }
 }

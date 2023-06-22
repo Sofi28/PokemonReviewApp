@@ -20,6 +20,12 @@
             return _context.Categories.Any(c => c.Id == id);
         }
 
+        public bool CreateCategory(Category category)
+        {
+            _context.Add(category);
+            return this.Save();
+        }
+
         public ICollection<Category> GetCategories()
         {
             return _context.Categories.OrderBy(c=> c.Name).ToList();
@@ -34,6 +40,12 @@
         {
             //return _context.Pokemon.Where(p=> p.PokemonCategories.Any(pc => pc.CategoryId == categoryId)).ToList();
             return _context.PokemonCategories.Where(pc => pc.CategoryId == categoryId).Select(c=> c.Pokemon).ToList();
+        }
+
+        public bool Save()
+        {
+            var save = _context.SaveChanges();
+            return save > 0 ? true : false ;
         }
     }
 }

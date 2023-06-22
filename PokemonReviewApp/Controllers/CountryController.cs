@@ -78,5 +78,42 @@
             }
             return Ok(owners);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCountry([FromBody] CountryDto countryCreate)
+        {
+            if (countryCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var country = _countryRepository.GetCountries()
+                                                    .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.Trim().ToUpper())
+                                                    .FirstOrDefault();
+
+            if (country != null)
+            {
+                ModelState.AddModelError("", "Country already exists");
+                return StatusCode(422, ModelState);
+
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var countrytMap = _mapper.Map<Country>(countryCreate);
+
+            if (!_countryRepository.CreateCountry(countrytMap))
+            {
+                ModelState.AddModelError("", "Something went wrong");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Succesfully created");
+        }
     }
 }

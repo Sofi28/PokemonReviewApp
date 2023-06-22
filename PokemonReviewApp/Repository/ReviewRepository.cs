@@ -20,6 +20,12 @@
             return _context.Reviews.Where(r => r.Id == reviewId).FirstOrDefault();
         }
 
+        public bool CreateReview(Review review)
+        {
+            _context.Add(review);
+            return this.Save();
+        }
+
         public ICollection<Review> GetReviews()
         {
             return _context.Reviews.OrderBy(r=> r.Reviewer.Id).ToList();
@@ -33,6 +39,12 @@
         public bool ReviewExists(int reviewId)
         {
             return _context.Reviews.Any(r=> r.Id == reviewId);
+        }
+
+        public bool Save()
+        {
+            var save = _context.SaveChanges();
+            return save > 0 ? true : false;
         }
     }
 }

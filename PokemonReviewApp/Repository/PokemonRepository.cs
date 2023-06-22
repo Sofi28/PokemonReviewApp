@@ -42,5 +42,39 @@
         {
             return _context.Pokemon.Any(p => p.Id == pokeId);
         }
+
+        public bool Save()
+        {
+            var save = _context.SaveChanges();
+            return save > 0 ? true : false;
+        }
+
+        public bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        {
+            var pokemonOwnerEntity = _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
+            var categoryEntity = _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault();   
+            
+            var pokemonOwner = new PokemonOwner()
+            {
+                Owner = pokemonOwnerEntity,
+                OwnerId = ownerId,
+                Pokemon = pokemon,
+                PokemonId = pokemon.Id
+            };
+
+            var pokemonCategory = new PokemonCategory()
+            {
+                Category = categoryEntity,
+                CategoryId = categoryId,
+                Pokemon = pokemon,
+                PokemonId = pokemon.Id
+            };
+
+            _context.Add(pokemonOwner);
+            _context.Add(pokemonCategory);
+            _context.Add(pokemon);
+
+            return this.Save();
+        }
     }
 }
